@@ -11,7 +11,8 @@
 set -u
 
 # ---- CONFIG: keep in sync with share.sh -------------------------------------
-TUN_IFACE="${TUN_IFACE:-utun4}"            # must equal share.sh's TUN_IFACE
+TUN_IFACE="${TUN_IFACE:-$(route -n get 8.8.8.8 2>/dev/null | awk '/interface:/{print $2}')}"
+TUN_IFACE="${TUN_IFACE:-utun4}"            # fallback if VPN already disconnected
 # -----------------------------------------------------------------------------
 
 echo "==> [1/3] Turning OFF Internet Sharing (clears persisted state)..."
